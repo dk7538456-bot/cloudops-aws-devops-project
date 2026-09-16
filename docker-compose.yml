@@ -1,0 +1,7 @@
+services:
+  cloudops-demo:
+    build: ./app
+    container_name: cloudops-demo
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
