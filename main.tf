@@ -145,7 +145,7 @@ resource "aws_instance" "app" {
   user_data = <<-EOF
     #!/bin/bash
     set -euxo pipefail
-    dnf install -y docker amazon-ssm-agent
+    dnf install -y docker
     systemctl enable --now docker
     systemctl enable --now amazon-ssm-agent
     EOF
@@ -169,3 +169,4 @@ resource "aws_cloudwatch_metric_alarm" "system_status" {
   alarm_actions       = var.alarm_topic_arn == "" ? [] : [var.alarm_topic_arn]
   tags                = { Name = "${var.project_name}-system-status" }
 }
+
