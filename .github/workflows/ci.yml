@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Compile the service and guardrail
+        run: python -m compileall -q app scripts
+
+      - name: Build the container image
+        run: docker build --tag cloudops-delivery-guard:ci .
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.4
+
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+
+      - name: Validate Terraform configuration
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate -no-color
+
+      - name: Scan the included safe plan example
+        run: python scripts/guardrail.py guardrail/examples/safe-plan.json --fail-on high

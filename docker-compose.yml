@@ -1,7 +1,18 @@
 services:
   cloudops-demo:
-    build: ./app
-    container_name: cloudops-demo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cloudops-delivery-guard:local
     ports:
-      - "5000:5000"
+      - "${WEB_PORT:-8080}:5000"
+    environment:
+      APP_VERSION: ${APP_VERSION:-local}
     restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

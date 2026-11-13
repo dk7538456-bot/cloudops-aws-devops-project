@@ -1,1 +1,5 @@
-key_name = "YOUR_EXISTING_EC2_KEY_PAIR"
+aws_region = "ap-south-1"
+
+# Keep the default subject unless the GitHub OIDC token for this repository
+# has a different immutable subject claim.
+github_oidc_subject = "repo:dk7538456-bot@293495808/cloudops-aws-devops-project@1373073270:ref:refs/heads/main"

@@ -1,0 +1,54 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.11.4",
+  "resource_changes": [
+    {
+      "address": "aws_security_group.insecure",
+      "type": "aws_security_group",
+      "change": {
+        "actions": ["create"],
+        "after": {
+          "ingress": [
+            {
+              "protocol": "tcp",
+              "from_port": 22,
+              "to_port": 22,
+              "cidr_blocks": ["0.0.0.0/0"],
+              "ipv6_cidr_blocks": []
+            },
+            {
+              "protocol": "tcp",
+              "from_port": 5000,
+              "to_port": 5000,
+              "cidr_blocks": ["0.0.0.0/0"],
+              "ipv6_cidr_blocks": []
+            }
+          ],
+          "tags": {}
+        }
+      }
+    },
+    {
+      "address": "aws_instance.insecure",
+      "type": "aws_instance",
+      "change": {
+        "actions": ["create"],
+        "after": {
+          "metadata_options": [{"http_tokens": "optional"}],
+          "root_block_device": [{"encrypted": false}],
+          "tags": {}
+        }
+      }
+    },
+    {
+      "address": "aws_iam_policy.wildcard",
+      "type": "aws_iam_policy",
+      "change": {
+        "actions": ["create"],
+        "after": {
+          "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\"}]}"
+        }
+      }
+    }
+  ]
+}

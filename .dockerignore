@@ -1,6 +1,11 @@
-__pycache__
-*.pyc
-.pytest_cache
 .git
-.gitignore
+.github
+.terraform
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+plan.json
+guardrail/
+scripts/
 README.md
